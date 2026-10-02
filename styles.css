@@ -1,0 +1,438 @@
+/* =========================================================================
+   RISE OF THE DEGENERACY — skeleton stylesheet
+   A novel told on two threads, 6,000 years apart: Ubaid Sumer and
+   Mesolithic/Neolithic Britain. Two accent colours (clay + flint) run
+   through headings and rules as a quiet visual thread tying the two
+   settings together — they meet at every heading, the way the two
+   storylines meet across the book.
+
+   Sections below:
+     1. Design tokens (colours, type, spacing)
+     2. Reset / base
+     3. Typography (incl. the auto-indent rule)
+     4. Header / footer
+     5. Navigation (chapter list + prev/next)
+     6. Article & sections
+     7. Responsive tweaks
+     8. Accessibility
+   ========================================================================= */
+
+/* -------------------------------------------------------------------------
+   1. Design tokens
+   ------------------------------------------------------------------------- */
+:root {
+  /* Ubaid Sumer thread — sun-baked mudbrick, river silt, ochre pigment */
+  --clay: #a8582f;
+  --ochre: #bd8f3a;
+
+  /* Mesolithic/Neolithic Britain thread — flint, moss, bog-oak */
+  --flint: #4f5d52;
+  --moss: #6d7c5f;
+
+  /* Shared ground */
+  --ink: #2b241c; /* body text */
+  --ink-soft: #57503f; /* secondary text */
+  --parchment: #ece3cf; /* page background */
+  --bone: #f6f1e3; /* card / nav background */
+  --hairline: #cfc2a1; /* dividers */
+
+  /* Type */
+  --font-display: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --font-body: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --font-utility: "Source Serif 4", Georgia, serif;
+
+  /* Layout */
+  --measure: 42em; /* comfortable reading width */
+  --gutter: clamp(1rem, 4vw, 3rem);
+  --radius: 2px;
+}
+
+/* -------------------------------------------------------------------------
+   2. Reset / base
+   ------------------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--parchment);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 0.94rem + 0.3vw, 1.125rem);
+  line-height: 1.65;
+}
+
+img,
+svg {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: var(--clay);
+}
+
+a:hover,
+a:focus-visible {
+  color: var(--flint);
+}
+
+/* -------------------------------------------------------------------------
+   3. Typography
+   ------------------------------------------------------------------------- */
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  color: var(--ink);
+  line-height: 1.2;
+  font-weight: 600;
+  margin: 1.4em 0 0.6em;
+}
+
+h1 {
+  font-size: clamp(2rem, 1.5rem + 2vw, 3rem);
+  margin-top: 0;
+}
+
+h2 {
+  font-size: clamp(1.5rem, 1.3rem + 1vw, 2rem);
+  padding-left: 0.6em;
+  border-left: 4px solid;
+  border-image: linear-gradient(var(--clay), var(--flint)) 1;
+}
+
+h3 {
+  font-size: clamp(1.2rem, 1.1rem + 0.5vw, 1.5rem);
+  color: var(--ink-soft);
+}
+
+/* Mid-chapter scene breaks (e.g. a jump between the two threads) */
+article h4 {
+  font-family: var(--font-utility);
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: center;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  border: 0;
+  margin: 2.2em 0 1.4em;
+}
+
+article h4::before,
+article h4::after {
+  content: "❦";
+  display: block;
+  font-size: 1rem;
+  color: var(--clay);
+  margin-bottom: 0.35em;
+}
+
+/* Body copy: indent every paragraph, but not one that opens a
+   heading's section — this reads like a printed novel. */
+p {
+  margin: 0;
+  text-indent: 1.5em;
+}
+
+h1 + p,
+h2 + p,
+h3 + p,
+h4 + p {
+  text-indent: 0;
+}
+
+em {
+  color: var(--ink-soft);
+}
+
+/* Verse / spirit-voice passages (e.g. Tashkilla's chant) */
+.centred-content {
+  margin: 2em 0;
+  padding: 1.2em var(--gutter);
+  background: var(--bone);
+  border-radius: var(--radius);
+  text-align: center;
+}
+
+.centred-content h3 {
+  font-family: var(--font-display);
+  font-style: italic;
+}
+
+.centred-content p {
+  text-indent: 0;
+  font-style: italic;
+  color: var(--ink-soft);
+}
+
+/* -------------------------------------------------------------------------
+   4. Header / footer
+   ------------------------------------------------------------------------- */
+header {
+  position: relative;
+  padding: 2rem var(--gutter) 1.5rem;
+  text-align: center;
+  background: var(--bone);
+}
+
+/* The twin-thread bar: clay meets flint, top of every page */
+header::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: linear-gradient(90deg, var(--clay) 50%, var(--flint) 50%);
+}
+
+header h1 {
+  margin: 0.2em 0 0;
+}
+
+header p {
+  margin: 0.3em 0 0;
+  text-indent: 0;
+  font-family: var(--font-utility);
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  color: var(--ink-soft);
+}
+
+footer {
+  margin-top: 3rem;
+  padding: 1.5rem var(--gutter) 2rem;
+  border-top: 1px solid var(--hairline);
+  text-align: center;
+}
+
+footer h4 {
+  font-family: var(--font-utility);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin: 0 0 0.4em;
+}
+
+footer p {
+  text-indent: 0;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+/* -------------------------------------------------------------------------
+   5. Navigation
+   ------------------------------------------------------------------------- */
+nav {
+  max-width: var(--measure);
+  margin: 2rem auto;
+  padding: 0 var(--gutter);
+}
+
+nav h4 {
+  font-family: var(--font-utility);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  text-align: left;
+  margin: 0 0 0.6em;
+}
+
+/* Prev / Index / Next links on chapter pages */
+nav p {
+  text-indent: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4em 0.8em;
+  font-family: var(--font-utility);
+}
+
+nav p a {
+  text-decoration: none;
+  padding: 0.4em 0.9em;
+  background: var(--bone);
+  border-radius: var(--radius);
+  border: 1px solid var(--hairline);
+}
+
+nav p a:hover,
+nav p a:focus-visible {
+  border-color: var(--clay);
+}
+
+/* Full chapter index list (index.html) */
+nav ul {
+  list-style: none;
+  margin: 0 0 1.2rem;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+  gap: 0.6rem;
+}
+
+nav ul a {
+  display: block;
+  text-decoration: none;
+  padding: 0.6em 0.9em;
+  background: var(--bone);
+  border-left: 3px solid var(--clay);
+  border-radius: var(--radius);
+  color: var(--ink);
+  font-family: var(--font-utility);
+}
+
+nav ul a:hover,
+nav ul a:focus-visible {
+  border-left-color: var(--flint);
+  background: var(--parchment);
+}
+
+/* -------------------------------------------------------------------------
+   6. Article & sections
+   ------------------------------------------------------------------------- */
+article {
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding: 2rem var(--gutter) 0;
+}
+
+article > section + section {
+  margin-top: 2.5rem;
+}
+
+/* -------------------------------------------------------------------------
+   6a. Contact form
+   ------------------------------------------------------------------------- */
+main {
+  max-width: var(--measure);
+  margin: 2rem auto 3rem;
+  padding: 0 var(--gutter);
+}
+
+main form {
+  background: var(--bone);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  padding: 1.75rem var(--gutter);
+}
+
+main form p {
+  text-indent: 0;
+  margin: 0 0 1.2em;
+}
+
+main form p:last-child {
+  margin-bottom: 0;
+}
+
+main form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4em;
+  font-family: var(--font-utility);
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+  color: var(--ink-soft);
+}
+
+main form input[type="text"],
+main form input[type="email"],
+main form textarea {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--ink);
+  background: var(--parchment);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  padding: 0.6em 0.8em;
+}
+
+main form textarea {
+  resize: vertical;
+  min-height: 8em;
+}
+
+main form input:focus-visible,
+main form textarea:focus-visible {
+  outline: none;
+  border-color: var(--clay);
+  box-shadow: 0 0 0 3px rgba(168, 88, 47, 0.15);
+}
+
+main form button[type="submit"] {
+  font-family: var(--font-utility);
+  font-size: 0.9rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--bone);
+  background: var(--clay);
+  border: none;
+  border-radius: var(--radius);
+  padding: 0.7em 1.6em;
+  cursor: pointer;
+}
+
+main form button[type="submit"]:hover,
+main form button[type="submit"]:focus-visible {
+  background: var(--flint);
+}
+
+/* -------------------------------------------------------------------------
+   7. Responsive tweaks
+   ------------------------------------------------------------------------- */
+@media (max-width: 600px) {
+  header {
+    padding: 1.5rem 1rem 1.25rem;
+  }
+
+  nav p {
+    justify-content: center;
+  }
+
+  nav ul {
+    grid-template-columns: repeat(auto-fill, minmax(8.5rem, 1fr));
+  }
+
+  main form {
+    padding: 1.25rem 1rem;
+  }
+}
+
+@media (min-width: 900px) {
+  article {
+    padding-top: 3rem;
+  }
+}
+
+/* -------------------------------------------------------------------------
+   8. Accessibility
+   ------------------------------------------------------------------------- */
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--flint);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}
+
+a[rel="external"]::after {
+  content: " ↗";
+  font-size: 0.8em;
+}
